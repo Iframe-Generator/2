@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Iframe Generator</title>
+
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #111;
+      color: white;
+      text-align: center;
+      padding-top: 100px;
+    }
+
+    input {
+      padding: 10px;
+      width: 300px;
+      margin: 10px;
+      border-radius: 6px;
+      border: none;
+      outline: none;
+    }
+
+    button {
+      padding: 10px 20px;
+      border-radius: 6px;
+      border: none;
+      background: #00ff88;
+      cursor: pointer;
+      font-weight: bold;
+    }
+
+    button:hover {
+      background: #00cc6a;
+    }
+  </style>
+</head>
+
+<body>
+
+  <h1>Fullscreen Iframe Generator</h1>
+
+  <input type="text" id="urlInput" placeholder="Enter URL (https://example.com)">
+  <br>
+  <input type="text" id="titleInput" placeholder="Enter Tab Title">
+  <br>
+  <button onclick="generate()">Generate</button>
+
+  <script>
+    function generate() {
+      const url = document.getElementById("urlInput").value;
+      const title = document.getElementById("titleInput").value;
+
+      if (!url) {
+        alert("Enter a URL first");
+        return;
+      }
+
+      const newTab = window.open();
+
+      newTab.document.write(`
+        <!DOCTYPE html>
+        <html>
+        <head>
+          <title>${title || "New Page"}</title>
+          <style>
+            html, body {
+              margin: 0;
+              padding: 0;
+              height: 100%;
+              overflow: hidden;
+            }
+
+            iframe {
+              border: none;
+              width: 100%;
+              height: 100%;
+            }
+          </style>
+        </head>
+        <body>
+          <iframe src="${url}" allowfullscreen></iframe>
+        </body>
+        </html>
+      `);
+
+      newTab.document.close();
+    }
+  </script>
+
+</body>
+</html>
