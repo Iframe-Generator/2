@@ -59,46 +59,51 @@
   <button onclick="generate()">Generate</button>
 
   <script>
-    function generate() {
-      const url = document.getElementById("urlInput").value;
-      const title = document.getElementById("titleInput").value;
+  function generate() {
+    let url = document.getElementById("urlInput").value.trim();
+    const title = document.getElementById("titleInput").value;
 
-      if (!url) {
-        alert("Enter a URL first");
-        return;
-      }
-
-      const newTab = window.open();
-
-      newTab.document.write(`
-        <!DOCTYPE html>
-        <html>
-        <head>
-          <title>${title || "New Page"}</title>
-          <style>
-            html, body {
-              margin: 0;
-              padding: 0;
-              height: 100%;
-              overflow: hidden;
-            }
-
-            iframe {
-              border: none;
-              width: 100%;
-              height: 100%;
-            }
-          </style>
-        </head>
-        <body>
-          <iframe src="${url}" allowfullscreen></iframe>
-        </body>
-        </html>
-      `);
-
-      newTab.document.close();
+    if (!url) {
+      alert("Enter a URL first");
+      return;
     }
-  </script>
+
+    // If it doesn't start with http:// or https:// → add https://
+    if (!url.startsWith("http://") && !url.startsWith("https://")) {
+      url = "https://" + url;
+    }
+
+    const newTab = window.open();
+
+    newTab.document.write(`
+      <!DOCTYPE html>
+      <html>
+      <head>
+        <title>${title || "New Page"}</title>
+        <style>
+          html, body {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            overflow: hidden;
+          }
+
+          iframe {
+            border: none;
+            width: 100%;
+            height: 100%;
+          }
+        </style>
+      </head>
+      <body>
+        <iframe src="${url}" allowfullscreen></iframe>
+      </body>
+      </html>
+    `);
+
+    newTab.document.close();
+  }
+</script>
 
 </body>
 </html>
