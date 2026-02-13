@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Home</title>
+
+  <style>
+    body {
+      margin: 0;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: #111;
+      font-family: Arial, sans-serif;
+    }
+
+    button {
+      padding: 20px 50px;
+      font-size: 28px;
+      font-weight: bold;
+      border: none;
+      border-radius: 10px;
+      background: #00ff88;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+
+    button:hover {
+      background: #00cc6a;
+      transform: scale(1.05);
+    }
+  </style>
+</head>
+
+<body>
+
+<button onclick="start()">Start</button>
+
+<script>
+  function start() {
+    window.location.href = "iframe.html";
+  }
+</script>
+
+</body>
+</html>
