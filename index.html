@@ -1,108 +1,128 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <meta charset="UTF-8">
-  <title>Iframe Generator</title>
+<meta charset="UTF-8">
+<title>Iframe Generator</title>
 
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      background: #111;
-      color: white;
-      text-align: center;
-      padding-top: 100px;
-    }
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    background: #111;
+    color: white;
+    text-align: center;
+    padding-top: 100px;
+    margin: 0;
+  }
 
-    input {
-      padding: 10px;
-      width: 300px;
-      margin: 10px;
-      border-radius: 6px;
-      border: none;
-      outline: none;
-    }
+  h1 {
+    font-size: 50px;
+    font-weight: 900;
+    background: linear-gradient(90deg, #00ff88, #00ccff);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    letter-spacing: 3px;
+  }
 
-    button {
-      padding: 10px 20px;
-      border-radius: 6px;
-      border: none;
-      background: #00ff88;
-      cursor: pointer;
-      font-weight: bold;
-    }
+  input {
+    padding: 10px;
+    width: 300px;
+    margin: 10px;
+    border-radius: 6px;
+    border: none;
+    outline: none;
+  }
 
-    button:hover {
-      background: #00cc6a;
-    }
+  button {
+    padding: 10px 20px;
+    border-radius: 6px;
+    border: none;
+    background: #00ff88;
+    cursor: pointer;
+    font-weight: bold;
+  }
 
-    h1 {
-      font-size: 50px;
-      font-weight: 900;
-      background: linear-gradient(90deg, #00ff88, #00ccff);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      text-transform: uppercase;
-      letter-spacing: 3px;
-      text-shadow: 0 0 20px rgba(0,255,136,0.5);
-    }
-  </style>
+  button:hover {
+    background: #00cc6a;
+  }
+
+  /* FULLSCREEN OVERLAY */
+  #overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: black;
+    display: none;
+    z-index: 9999;
+  }
+
+  #overlay iframe {
+    width: 100%;
+    height: 100%;
+    border: none;
+  }
+
+  #closeBtn {
+    position: absolute;
+    top: 15px;
+    right: 20px;
+    z-index: 10000;
+    background: red;
+    color: white;
+    border: none;
+    padding: 8px 12px;
+    font-size: 18px;
+    cursor: pointer;
+    border-radius: 6px;
+  }
+</style>
 </head>
 
 <body>
 
-  <h1>Fullscreen Iframe Generator</h1>
+<h1>Fullscreen Iframe Generator</h1>
 
-  <input type="text" id="urlInput" placeholder="Enter URL (https://example.com)">
-  <br>
-  <input type="text" id="titleInput" placeholder="Enter Tab Title">
-  <br>
-  <button onclick="generate()">Generate</button>
+<input type="text" id="urlInput" placeholder="Enter URL (example.com)">
+<br>
+<input type="text" id="titleInput" placeholder="Enter Tab Title">
+<br>
+<button onclick="generate()">Generate</button>
 
-  <script>
-  function generate() {
-    let url = document.getElementById("urlInput").value.trim();
-    const title = document.getElementById("titleInput").value;
+<!-- Overlay -->
+<div id="overlay">
+  <button id="closeBtn" onclick="closeOverlay()">✕</button>
+  <iframe id="fullFrame" allowfullscreen></iframe>
+</div>
 
-    if (!url) {
-      alert("Enter a URL first");
-      return;
-    }
+<script>
+function generate() {
+  let url = document.getElementById("urlInput").value.trim();
+  const title = document.getElementById("titleInput").value.trim();
 
-    // If it doesn't start with http:// or https:// → add https://
-    if (!url.startsWith("http://") && !url.startsWith("https://")) {
-      url = "https://" + url;
-    }
-
-    const newTab = window.open();
-
-    newTab.document.write(`
-      <!DOCTYPE html>
-      <html>
-      <head>
-        <title>${title || "New Page"}</title>
-        <style>
-          html, body {
-            margin: 0;
-            padding: 0;
-            height: 100%;
-            overflow: hidden;
-          }
-
-          iframe {
-            border: none;
-            width: 100%;
-            height: 100%;
-          }
-        </style>
-      </head>
-      <body>
-        <iframe src="${url}" allowfullscreen></iframe>
-      </body>
-      </html>
-    `);
-
-    newTab.document.close();
+  if (!url) {
+    alert("Enter a URL first");
+    return;
   }
+
+  // Auto add https:// if missing
+  if (!url.startsWith("http://") && !url.startsWith("https://")) {
+    url = "https://" + url;
+  }
+
+  // Change tab title if provided
+  if (title) {
+    document.title = title;
+  }
+
+  document.getElementById("fullFrame").src = url;
+  document.getElementById("overlay").style.display = "block";
+}
+
+function closeOverlay() {
+  document.getElementById("overlay").style.display = "none";
+  document.getElementById("fullFrame").src = "";
+}
 </script>
 
 </body>
